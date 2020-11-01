@@ -1,0 +1,96 @@
+<project name="BDED2" basedir="." default="main">
+
+  <property name="ant.build.javac.source" value="1.8"/>
+  <property name="ant.build.javac.target" value="1.8"/>
+
+  <property name="src.server.dir" value="server"/>
+  <property name="src.client.dir" value="Client"/>
+  <property name="src.operations.dir" value="operations"/>
+
+  <property name="build.dir"   value="build"/>
+
+  <property name="build.server.dir" value="${build.dir}/server"/>
+  <property name="classes.server.dir" value="${build.server.dir}/classes"/>
+  <property name="jar.server.dir"     value="${build.server.dir}/jar"/>
+
+  <property name="build.client.dir" value="${build.dir}/Client"/>
+  <property name="classes.client.dir" value="${build.client.dir}/classes"/>
+  <property name="jar.client.dir"     value="${build.client.dir}/jar"/>
+
+  <property name="build.operations.dir" value="${build.dir}/operations"/>
+  <property name="classes.operations.dir" value="${build.operations.dir}/classes"/>
+  <property name="jar.operations.dir"     value="${build.operations.dir}/jar"/>
+
+  <property name="server-main-class"  value="serverImp"/>
+  <property name="client-main-class"  value="Client"/>
+  <property name="Operations-main-class"  value="Operations" />
+
+  <target name="clean">
+    <delete dir="${build.dir}"/>
+  </target>
+
+  <target name="compile-server">
+    <mkdir dir="${classes.server.dir}"/>
+    <javac srcdir="${src.server.dir}" destdir="${classes.server.dir}"/>
+    <rmic classname="serverImp" base="${classes.server.dir}"/>
+  </target>
+
+  <target name="compile-client" depends="compile-server">
+    <mkdir dir="${classes.client.dir}"/>
+    <javac classpath="${classes.server.dir}:." srcdir="${src.client.dir}" destdir="${classes.client.dir}"/>
+  </target>
+
+  <target name="compile-operations" depends="compile-client">
+    <mkdir dir="${classes.operations.dir}"/>
+    <javac classpath="${classes.client.dir}:${classes.server.dir}:. " srcdir="${src.operations.dir}" destdir="${classes.operations.dir}"/>
+  </target>
+
+  <target name="jar-server" depends="compile-server">
+    <mkdir dir="${jar.server.dir}"/>
+    <jar destfile="${jar.server.dir}/${ant.project.name}-server.jar" basedir="${classes.server.dir}">
+      <manifest>
+        <attribute name="Main-Class" value="${server-main-class}"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="jar-client" depends="compile-client">
+    <mkdir dir="${jar.client.dir}"/>
+    <jar destfile="${jar.client.dir}/${ant.project.name}-client.jar" basedir="${classes.client.dir}">
+      <fileset dir="${classes.server.dir}" includes="*Stub*"/>
+      <fileset dir="${classes.server.dir}" includes="BankInterface.class"/>
+      <fileset dir="${classes.server.dir}" includes="serverImp.class"/>
+      <fileset dir="${classes.server.dir}" includes="Compte.class"/>
+      <manifest>
+        <attribute name="Main-Class" value="${client-main-class}"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="jar-operations" depends="compile-operations,compile-client" >
+    <mkdir dir="${jar.operations.dir}"/>
+    <jar destfile="${jar.operations.dir}/${ant.project.name}-operations.jar" basedir="${classes.operations.dir}">
+      <fileset dir="${classes.server.dir}" includes="*Stub*"/>
+      <fileset dir="${classes.server.dir}" includes="BankInterface.class"/>
+      <fileset dir="${classes.server.dir}" includes="serverImp.class"/>
+      <fileset dir="${classes.server.dir}" includes="Compte.class"/>
+      <fileset dir="${classes.client.dir}" includes="Client.class"/>
+      <manifest>
+        <attribute name="Main-Class" value="${Operations-main-class}"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="run-server" depends="jar-server">
+    <java classpath="." jar="${jar.server.dir}/${ant.project.name}-server.jar" fork="true"/>
+  </target>
+
+  <target name="run-client" depends="jar-client">
+    <java jar="${jar.client.dir}/${ant.project.name}-client.jar" fork="true"/>
+  </target>
+
+  <target name="run-operations" depends="jar-operations">
+    <java jar="${jar.operations.dir}/${ant.project.name}-operations.jar" fork="true"/>
+  </target>
+
+</project>
