@@ -3,7 +3,7 @@ import java.lang.*;
 import java.util.*;
 import java.rmi.registry.*;
 
-
+// CLIENT CLASS
 public class Client {
     public static Scanner scanner;
     public static BankInterface bank;

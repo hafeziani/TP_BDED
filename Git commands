@@ -1,0 +1,34 @@
+git config –global user.name “[name]” 
+git config –global user.email “[email address]”
+git init [repository name]
+git clone [url]
+git add *
+git commit -m “[ Type in the commit message]”
+git diff
+git diff –staged
+git diff [first branch] [second branch]
+git reset [file]
+git reset [commit]
+git reset –hard [commit]
+git status
+git rm [file]
+git log
+git log –follow[file]
+git show [commit]
+git tag [commitID]
+git branch
+git branch [branch name]
+git branch -d [branch name]
+git checkout [branch name]
+git checkout -b [branch name]
+git merge [branch name]
+git remote add [variable name] [Remote Server Link]
+git push [variable name] master
+git push [variable name] [branch]
+git push –all [variable name]
+git push [variable name] :[branch name]
+git pull [Repository Link]
+git stash save
+git stash pop
+git stash list
+git stash drop
