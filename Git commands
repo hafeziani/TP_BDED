@@ -32,3 +32,5 @@ git stash save
 git stash pop
 git stash list
 git stash drop
+
+Il n'est pas vide car il y a deux commits dessus ! Mais tu peux forcer le push avec l'option -f, par exemple : git push -f origin. ;)
