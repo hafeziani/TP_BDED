@@ -27,6 +27,11 @@ public class serverImp extends UnicastRemoteObject implements BankInterface {
         if (!AccountExistence(identification)) {
             Account acc = new Account(identification, balance);
             this.AccountsList.put(identification, acc);
+            Calendar calendar = Calendar.getInstance();
+                int hour = calendar.get(Calendar.HOUR_OF_DAY);
+                int minute = calendar.get(Calendar.MINUTE);
+                int second = calendar.get(Calendar.SECOND);
+            OperationsList.add(hour+":"+minute+":"+second+"-Le client "+identification+"a créé avec un solde de "+balance);
             return true;
         }
         else {
@@ -36,16 +41,31 @@ public class serverImp extends UnicastRemoteObject implements BankInterface {
 
     public int balance(int identification) throws RemoteException {
         Account acc = AccountsList.get(identification);
+        Calendar calendar = Calendar.getInstance();
+            int hour = calendar.get(Calendar.HOUR_OF_DAY);
+            int minute = calendar.get(Calendar.MINUTE);
+            int second = calendar.get(Calendar.SECOND);
+        OperationsList.add(hour+":"+minute+":"+second+"-Le client "+identification+"a créé avec un solde de "+acc.balance());
         return acc.balance();
     }
 
     public void Deposite(int identification, int balance) throws RemoteException {
         Account acc = AccountsList.get(identification);
+        Calendar calendar = Calendar.getInstance();
+            int hour = calendar.get(Calendar.HOUR_OF_DAY);
+            int minute = calendar.get(Calendar.MINUTE);
+            int second = calendar.get(Calendar.SECOND);
+        OperationsList.add(hour+":"+minute+":"+second+"-Le client "+identification+"a déposite un montant "+balance);
         acc.setBalance(acc.balance() + balance);
     }
 
     public void Withdrawal(int identification, int balance) throws RemoteException {
         Account acc = AccountsList.get(identification);
+        Calendar calendar = Calendar.getInstance();
+            int hour = calendar.get(Calendar.HOUR_OF_DAY);
+            int minute = calendar.get(Calendar.MINUTE);
+            int second = calendar.get(Calendar.SECOND);
+        OperationsList.add(hour+":"+minute+":"+second+"-Le client "+identification+"a retrait un montant "+balance);
         acc.setBalance(acc.balance() - balance);
     }
 
