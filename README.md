@@ -1,6 +1,6 @@
 M2 Bases de Données et Intelligence Artificielle
-UE5 Bases de Donnees et Environnements Distribues\n 
-Travaux Pratiques\n
+UE5 Bases de Donnees et Environnements Distribues 
+Travaux Pratiques
 Exercise 2
 JOKAR Hafez
 
